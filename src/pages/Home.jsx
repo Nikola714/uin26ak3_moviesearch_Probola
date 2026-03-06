@@ -32,6 +32,7 @@ export default function Home(){
          localStorage.setItem("search", JSON.stringify(history))
     }, [history])
 
+    //Asynkron funksjon for API-kall, altså hente filmer fra API
     const getMovies = async()=>{
         try{
             const response = await fetch(`${baseUrl}${apiKey}`)
@@ -47,10 +48,14 @@ export default function Home(){
         setSearch(e.target.value)
     }
 
+    //Når skjema sendes
+    //når brukeren klikekr enter eller klikker på "Søk" knappen
     const handleSubmit = (e)=> {
-        e.preventDefault()
-        e.target.reset()
+        e.preventDefault() //nettside skal ikke opdatere seg
+        e.target.reset() //input felte tømmer seg
 
+
+        //legger til nytt søk til liste og localStorage
         setHistory((prev) => [...prev, search])
 
        
