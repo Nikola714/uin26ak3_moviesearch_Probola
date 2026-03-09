@@ -20,7 +20,7 @@ export default function Home(){
 
     //lager API-url, altså lager url basert av søk
     //!!!!ER IKKE I BRUKT ENNÅ!!!!!!!
-    const baseUrl = `http://www.omdbapi.com/?s=${search}&apikey=`
+    const baseUrl = `http://www.omdbapi.com/?s=${search}&apikey=`  /*baseUrl:  http://www.omdbapi.com/?i=tt3896198&apikey=90fb6a7*/
 
     //Henter API-nøkkel fra .env
     //GJØR SÅNN, slik at ingen ser sensetive inforrmasjon
@@ -71,7 +71,7 @@ export default function Home(){
                 Søk etter film
                 <input type="search" placeholder="Harry Potter" onChange={handleChange} onFocus={() => setFocused(true)} /*onBlur={()=>setFocused(false)}*/></input>
             </label>
-        { focused ? <History history={history} setSearch={setSearch} /> : null } 
+        {focused ? <History history={history} setSearch={setSearch} /> : null } 
             <button onClick={getMovies}>Søk</button>
         </form>
     </main>
