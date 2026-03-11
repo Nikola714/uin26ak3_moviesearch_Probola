@@ -25,7 +25,12 @@ export default function Home(){
     //Hvis localStorage finnes → omgjør til array
     //Hvis ikke → start med tom array
     const [history, setHistory] = useState(storedHistory ? JSON.parse(storedHistory) : [])
-    console.log("LocalStorage:", storedHistory)
+    console.log("LocalStorage:", storedHistory) //Skriver det som ligger i localstorage som text
+
+
+
+
+
 
     //lager API-url, altså lager url basert av søk
     //!!!!ER IKKE I BRUKT ENNÅ!!!!!!!
@@ -41,12 +46,12 @@ export default function Home(){
          localStorage.setItem("search", JSON.stringify(history))
     }, [history])
 
-    //Asynkron funksjon for API-kall, altså hente filmer fra API
+    //Asynkron funksjon for API-kall, altså hente filmer fra API basert på hva brukeren har skrevet i input felte
     const getMovies = async()=>{
         try{
             const response = await fetch(`${baseUrl}${apiKey}`)
             const data = await response.json()
-            console.log(data)
+            console.log("Brukeren søker etter: ", data)
             setSearch(data || [])
         }
         catch(err){
@@ -99,7 +104,7 @@ export default function Home(){
        
     }
 
-    console.log(history)
+    console.log("Brukeren søkt tidligere etter: ",history) //Skriver det brukeren søkt etter som array i json språk
 
     return (
     <main>
