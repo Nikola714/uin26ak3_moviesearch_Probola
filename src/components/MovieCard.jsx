@@ -1,10 +1,15 @@
-export default function MovieCard({movie}) {
+export default function MovieCard({BondMovie}) {
     return(
+        <>
         <article>
-            <img src={movie.Poster}  alt={movie.Title}/>
-            <h3>{movie.Title}</h3>
-            <p>{movie.Year}</p>
-            <p>{movie.Type}</p>
+            <img src={BondMovie.Poster}  alt={BondMovie.Title}/>
+            <h3>{BondMovie.Title}</h3>
+            <p>{BondMovie.Year}</p>
+            <p>{BondMovie.Type}</p>
         </article>
+
+
+        </>
+        
     )
 }

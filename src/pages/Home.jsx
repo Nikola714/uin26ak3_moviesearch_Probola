@@ -29,12 +29,9 @@ export default function Home(){
 
 
 
-
-
-
     //lager API-url, altså lager url basert av søk
     //!!!!ER IKKE I BRUKT ENNÅ!!!!!!!
-    const baseUrl = `http://www.omdbapi.com/?s=${search}&apikey=`  /*baseUrl:  http://www.omdbapi.com/?i=tt3896198&apikey=90fb6a7*/
+    const baseUrl = `http://www.omdbapi.com/?s=${search}&type=movie&apikey=`  /*baseUrl:  http://www.omdbapi.com/?i=tt3896198&apikey=90fb6a7*/
 
     //Henter API-nøkkel fra .env
     //GJØR SÅNN, slik at ingen ser sensetive inforrmasjon
@@ -45,6 +42,10 @@ export default function Home(){
     useEffect(() => {
          localStorage.setItem("search", JSON.stringify(history))
     }, [history])
+
+
+
+    //SØK RESULTAT
 
     //Asynkron funksjon for API-kall, altså hente filmer fra API basert på hva brukeren har skrevet i input felte
     const getMovies = async()=>{
@@ -63,33 +64,50 @@ export default function Home(){
         setSearch(e.target.value)
     }
 
-    //Kode som henter alle filmer med James Bond
+    //JAMES BOND FILMER
     
     //Kode er skrevet med studentassistent
-        //siden det funket ikke spurte jeg AI om hjelp( https://chatgpt.com/share/69b00258-9050-800c-987a-491c141ba8fa )
+        //siden den kode delen funket ikke spurte jeg AI om hjelp( https://chatgpt.com/share/69b00258-9050-800c-987a-491c141ba8fa )
     const getJamesBond = async() => {
         try{
-            const response = await fetch(`http://www.omdbapi.com/?s=james+bond&apikey=${apiKey}`)
+            const response = await fetch(`http://www.omdbapi.com/?s=james+bond&apikey=${apiKey}`) //url for James Bond filmer
             const data = await response.json()
             console.log("james bond fetch :" ,data)
 
-            setJamesBond(data.search || [])
+            setJamesBond(data.Search || [])
         }
         catch(err) {
             console.error(err)
         }
     }
 
-    //Kode fra studentassistent 
-    // const getJames = async() => {
-    //     fetch(`http://www.omdbapi.com/?s=james+bond&apikey=${apiKey}`)
-    //     .then(response => response.json())
-    //     .then(data => {setJamesBond(data.search || []) })
-    // }
-
     useEffect(() => {
        getJamesBond()
+    }, []) //stopper kode fra å kjøre hele tiden
+
+
+    //ALLE FILMER 
+
+    const getAllMovies = async()=> {
+        try{
+            const response = await fetch(`http://www.omdbapi.com/?s=${search}&apikey=${apiKey}`)
+            const data = await response.json()
+            console.log("Alle filmer:" , data)
+
+            setmovie(data.Search || [])
+        }
+        catch(err){
+            console.error(err)
+        }
+    }
+
+    useEffect(() => {
+        getAllMovies()
     }, [])
+
+
+
+
 
     //Når skjema sendes
     //når brukeren klikekr enter eller klikker på "Søk" knappen
@@ -117,9 +135,12 @@ export default function Home(){
         {focused ? <History history={history} setSearch={setSearch} /> : null } 
             <button onClick={getMovies}>Søk</button>
         </form>
-        {jamesBond?.map(movie => (
-            <MovieCard key={movie.imdbID} movie={movie}/>
+        {jamesBond?.map(BondMovie => (
+            <MovieCard key={BondMovie.imdbID} BondMovie={BondMovie}/>
         ))}
+
+
+        
         
     </main>
 
