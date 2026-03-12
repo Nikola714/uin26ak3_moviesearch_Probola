@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import History from "../components/History"
 import MovieCard from "../components/MovieCard"
+import AllMovies from "../components/AllMovies"
 
 export default function Home(){
 
@@ -53,7 +54,7 @@ export default function Home(){
             const response = await fetch(`${baseUrl}${apiKey}`)
             const data = await response.json()
             console.log("Brukeren søker etter: ", data)
-            setSearch(data || [])
+            setSearch(data.Search || [])
         }
         catch(err){
             console.error(err);
@@ -135,8 +136,13 @@ export default function Home(){
         {focused ? <History history={history} setSearch={setSearch} /> : null } 
             <button onClick={getMovies}>Søk</button>
         </form>
+        
         {jamesBond?.map(BondMovie => (
             <MovieCard key={BondMovie.imdbID} BondMovie={BondMovie}/>
+        ))}
+
+        {movie?.map(movies => (
+            <AllMovies key={movies.imdbID} movies={movies}/>
         ))}
 
 
