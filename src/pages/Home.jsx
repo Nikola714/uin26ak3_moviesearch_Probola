@@ -82,7 +82,7 @@ export default function Home(){
     }
 
     useEffect(() => {
-       getJamesBond()
+        getJamesBond()
     }, []) //stopper kode fra å kjøre hele tiden
 
 
