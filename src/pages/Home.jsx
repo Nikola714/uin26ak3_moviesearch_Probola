@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import History from "../components/History"
 import MovieCard from "../components/MovieCard"
 import AllMovies from "../components/AllMovies"
+import noImage from "../assets/no-image.png"
+import "../style/style.scss"
 
 export default function Home(){
 
@@ -32,7 +34,7 @@ export default function Home(){
 
     //lager API-url, altså lager url basert av søk
     //!!!!ER IKKE I BRUKT ENNÅ!!!!!!!
-    const baseUrl = `http://www.omdbapi.com/?s=${search}&type=movie&apikey=`  /*baseUrl:  http://www.omdbapi.com/?i=tt3896198&apikey=90fb6a7*/
+    const baseUrl = `https://www.omdbapi.com/?s=${search}&type=movie&apikey=`  /*baseUrl:  http://www.omdbapi.com/?i=tt3896198&apikey=90fb6a7*/
 
     //Henter API-nøkkel fra .env
     //GJØR SÅNN, slik at ingen ser sensetive inforrmasjon
@@ -71,7 +73,7 @@ export default function Home(){
         //siden den kode delen funket ikke spurte jeg AI om hjelp( https://chatgpt.com/share/69b00258-9050-800c-987a-491c141ba8fa )
     const getJamesBond = async() => {
         try{
-            const response = await fetch(`http://www.omdbapi.com/?s=james+bond&apikey=${apiKey}`) //url for James Bond filmer
+            const response = await fetch(`https://www.omdbapi.com/?s=james+bond&apikey=${apiKey}`) //url for James Bond filmer
             const data = await response.json()
             console.log("james bond fetch :" ,data)
 
@@ -88,10 +90,11 @@ export default function Home(){
 
 
     //ALLE FILMER 
+    //Til å fikse problem med å få bilder på selve nettside og ikke bare i console brukte jeg hjelp av ChatGPT også for legge til ny bilde som skal vises når original bilde fra API mangles ( https://chatgpt.com/share/69b2c926-6f14-800c-a137-3fdcd708dbb1 )
 
     const getAllMovies = async()=> {
         try{
-            const response = await fetch(`http://www.omdbapi.com/?s=${search}&apikey=${apiKey}`)
+            const response = await fetch(`https://www.omdbapi.com/?s=${search}&apikey=${apiKey}`)
             const data = await response.json()
             console.log("Alle filmer:" , data)
 
@@ -136,14 +139,16 @@ export default function Home(){
         {focused ? <History history={history} setSearch={setSearch} /> : null } 
             <button onClick={getMovies}>Søk</button>
         </form>
-        
-        {jamesBond?.map(BondMovie => (
-            <MovieCard key={BondMovie.imdbID} BondMovie={BondMovie}/>
-        ))}
 
-        {movie?.map(movies => (
-            <AllMovies key={movies.imdbID} movies={movies}/>
-        ))}
+        <section className="moviesSection">
+            {jamesBond?.map(BondMovie => (
+                <MovieCard key={BondMovie.imdbID} {...BondMovie} noImage={noImage}/>
+            ))}
+
+            {movie?.map(movieItem => (
+                <AllMovies key={movieItem.imdbID} {...movieItem} noImage={noImage}/>
+            ))}
+        </section>
 
 
         

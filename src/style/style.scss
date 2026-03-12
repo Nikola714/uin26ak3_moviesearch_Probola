@@ -1,0 +1,18 @@
+
+.moviesSection{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 900px;
+}
+
+.movies{
+    max-width: 300px;
+    margin-left: 1rem;
+    margin: auto;
+    min-width: 100px;
+}
+
+.image{
+    max-width: 200px;
+}
+

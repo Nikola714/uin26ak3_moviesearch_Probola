@@ -1,15 +1,13 @@
-export default function MovieCard({BondMovie}) {
+export default function MovieCard({ Title, Year, Type, Poster, noImage }) {
     return(
-        <>
-        <article>
-            <img src={BondMovie.Poster}  alt={BondMovie.Title}/>
-            <h3>{BondMovie.Title}</h3>
-            <p>{BondMovie.Year}</p>
-            <p>{BondMovie.Type}</p>
+        <article className="movies">
+            {/*Sjekekr om Poster altså bilde er ikke "N/A isteden for kilde til bilde"
+            altså hvis bilde inneholder "N/A isteden for kilde til bilde så vis "noImage" istedenfor*/}
+            {/*OBS: noen bilder har kilde men viser ikke bilde uansett*/}
+            <img className="image" src={Poster !== "N/A" ? Poster : noImage} alt={Title}/> {/*ChatGPT sin kode for å få mitt bilde isteden for bilde som mangler*/}
+            <h3>{Title}</h3>
+            <p>{Year}</p>
+            <p>{Type}</p>
         </article>
-
-
-        </>
-        
     )
 }
