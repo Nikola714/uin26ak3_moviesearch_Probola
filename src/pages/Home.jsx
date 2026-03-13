@@ -73,7 +73,7 @@ export default function Home(){
         //siden den kode delen funket ikke spurte jeg AI om hjelp( https://chatgpt.com/share/69b00258-9050-800c-987a-491c141ba8fa )
     const getJamesBond = async() => {
         try{
-            const response = await fetch(`https://www.omdbapi.com/?s=james+bond&apikey=${apiKey}`) //url for James Bond filmer
+            const response = await fetch(`https://www.omdbapi.com/?s=james+bond&type=movie&apikey=${apiKey}`) //url for James Bond filmer
             const data = await response.json()
             console.log("james bond fetch :" ,data)
 
