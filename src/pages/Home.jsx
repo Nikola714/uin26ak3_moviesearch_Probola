@@ -4,7 +4,6 @@ import MovieCard from "../components/MovieCard"
 import AllMovies from "../components/AllMovies"
 import noImage from "../assets/no-image.png"
 import "../style/style.scss"
-import { Link } from "react-router-dom"
 
 export default function Home(){
 
@@ -141,10 +140,6 @@ export default function Home(){
             <button onClick={getMovies}>Søk</button>
         </form>
 
-        <section>
-            Filmer
-            <Link to="movie">Filmer</Link>
-        </section>
         <section className="moviesSection">
             {jamesBond?.map(BondMovie => (
                 <MovieCard key={BondMovie.imdbID} {...BondMovie} noImage={noImage}/>
