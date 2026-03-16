@@ -142,7 +142,7 @@ export default function Home(){
 
         <section className="moviesSection">
             {jamesBond?.map(BondMovie => (
-                <MovieCard key={BondMovie.imdbID} {...BondMovie} noImage={noImage}/>
+                <MovieCard key={BondMovie.imdbID} {...BondMovie} noImage={noImage} />
             ))}
 
             {movie?.map(movieItem => (
