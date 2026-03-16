@@ -33,8 +33,7 @@ export default function Home(){
 
 
     //lager API-url, altså lager url basert av søk
-    //!!!!ER IKKE I BRUKT ENNÅ!!!!!!!
-    const baseUrl = `https://www.omdbapi.com/?s=${search}&type=movie&apikey=`  /*baseUrl:  http://www.omdbapi.com/?i=tt3896198&apikey=90fb6a7*/
+    const baseUrl = `https://www.omdbapi.com/?s=${search}&type=movie&apikey=` 
 
     //Henter API-nøkkel fra .env
     //GJØR SÅNN, slik at ingen ser sensetive inforrmasjon
@@ -56,24 +55,21 @@ export default function Home(){
             const response = await fetch(`${baseUrl}${apiKey}`)
             const data = await response.json()
             console.log("Brukeren søker etter: ", data)
-            setSearch(data.Search || [])
+            setmovie(data.Search || [])
         }
         catch(err){
             console.error(err);
         }
     }
 
-    const handleChange = (e)=>{
-        setSearch(e.target.value)
-    }
 
     //JAMES BOND FILMER
     
     //Kode er skrevet med studentassistent
-        //siden den kode delen funket ikke spurte jeg AI om hjelp( https://chatgpt.com/share/69b00258-9050-800c-987a-491c141ba8fa )
+        //siden den kode delen funket ikke spurte jeg AI om hjelp( https://chatgpt.com/share69b00258-9050-800c-987a-491c141ba8fa )
     const getJamesBond = async() => {
         try{
-            const response = await fetch(`https://www.omdbapi.com/?s=james+bond&type=movie&apikey=${apiKey}`) //url for James Bond filmer
+            const response = await fetch(`https://www.omdbapi.com/?s=james+bond&type=movie&apikey=${apiKey}`) //url for JamesBond filmer
             const data = await response.json()
             console.log("james bond fetch :" ,data)
 
@@ -89,42 +85,20 @@ export default function Home(){
     }, []) //stopper kode fra å kjøre hele tiden
 
 
-    //ALLE FILMER 
-    //Til å fikse problem med å få bilder på selve nettside og ikke bare i console brukte jeg hjelp av ChatGPT også for legge til ny bilde som skal vises når original bilde fra API mangles ( https://chatgpt.com/share/69b2c926-6f14-800c-a137-3fdcd708dbb1 )
-
-    const getAllMovies = async()=> {
-        try{
-            const response = await fetch(`https://www.omdbapi.com/?s=${search}&apikey=${apiKey}`)
-            const data = await response.json()
-            console.log("Alle filmer:" , data)
-
-            setmovie(data.Search || [])
-        }
-        catch(err){
-            console.error(err)
-        }
-    }
-
-    useEffect(() => {
-        getAllMovies()
-    }, [])
-
-
-
 
 
     //Når skjema sendes
     //når brukeren klikekr enter eller klikker på "Søk" knappen
-    const handleSubmit = (e)=> {
-        e.preventDefault() //nettside skal ikke opdatere seg
-        e.target.reset() //input felte tømmer seg
+   const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!search) return;
 
+    // Legg til i historikk
+    setHistory(prev => [...prev, search]);
 
-        //legger til nytt søk til liste og localStorage
-        setHistory((prev) => [...prev, search])
-
-       
-    }
+    // Hent filmer basert på search
+    getMovies();
+}
 
     console.log("Brukeren søkt tidligere etter: ",history) //Skriver det brukeren søkt etter som array i json språk
 
@@ -134,20 +108,27 @@ export default function Home(){
         <form onSubmit={handleSubmit}>
             <label>
                 Søk etter film
-                <input type="search" placeholder="Harry Potter" onChange={handleChange} onFocus={() => setFocused(true)} /*onBlur={()=>setFocused(false)}*/></input>
+                <input type="search" 
+                    placeholder="Harry Potter" 
+                    value={search || ""} 
+                    onChange={(e) => setSearch(e.target.value)}
+                    onFocus={() => setFocused(true)}
+                />
             </label>
         {focused ? <History history={history} setSearch={setSearch} /> : null } 
             <button onClick={getMovies}>Søk</button>
         </form>
 
         <section className="moviesSection">
-            {jamesBond?.map(BondMovie => (
-                <MovieCard key={BondMovie.imdbID} {...BondMovie} noImage={noImage} />
-            ))}
-
-            {movie?.map(movieItem => (
-                <AllMovies key={movieItem.imdbID} {...movieItem} noImage={noImage}/>
-            ))}
+            {/*if test fra ChatGPT ( https://chatgpt.com/share/69b7d240-1f54-800c-a246-7a3e1892ceca ) */}
+            {movie && movie.length > 0 //hvis søkeresultat eller standart forside med 10 filmer av James Bond og 10 annet filmer
+                ? movie.map((movieItem, UnicIndex) => (
+                    <AllMovies key={movieItem.imdbID + UnicIndex} {...movieItem} noImage={noImage}/>
+                )) //skriver alle filmer (altså alle indexer med tilsvarne Title, legget til UnicIndex for å beskytte at filmer med samme key som er imdbID kommer uten problem)
+                : jamesBond.map((BondMovie,UnicIndex ) => (
+                    <MovieCard key={BondMovie.imdbID + UnicIndex} {...BondMovie} noImage={noImage}/>
+                ))
+            }
         </section>
 
 
