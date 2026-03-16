@@ -1,23 +1,33 @@
+body{
+    background-color: #82b1d5;
+}
+
 
 .moviesSection{
     display: flex;
     flex-wrap: wrap;
-    max-width: 900px;
+    max-width: 1400px;
+    margin: 1rem;
 }
 
 .movies{
     max-width: 300px;
     margin: auto;
     min-width: 200px;
-    padding: 0.5rem;
+    padding: 1rem;
 }
 
 .image{
     max-width: 200px;
     margin: auto;
+    width: 100%;
 }
 
 
 .link{
+    color: #fff;
+}
+
+p{
     color: #fff;
 }
